@@ -1,0 +1,5 @@
+IdProduit, NomProduit ,       PrixUnitaire, Unite, TypeTarification,                 Quantite,           prix,    Devise  
+"1",         "Pistache",          "6",            "100",   "PAR_UNITE",                    ,                 ,    "EUR"           
+"2",         "Boisson",           "1",              "1",   "REMISE_SUR_QUANTITE",         "3",            "2",    "EUR" 
+"3",         "Pizza",             "3",              "1",   "SIMPLE",                       ,                 ,    "EUR"
+"4",         "TabletteChocolat",  "2",              "1",   "REMISE_SUR_PRIX",             "4",            "5",    "EUR"
