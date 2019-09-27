@@ -22,7 +22,6 @@ public class ProduitAggregateur implements ArgumentsAggregator {
 		produit.setId(arguments.getLong(0));
 		produit.setNom(arguments.getString(1));
 		produit.setPrix(new BigDecimal(arguments.getLong(2)));
-		produit.setUnite(arguments.getLong(3));
 		produit.setDevise(arguments.getString(7));
 
 		final String typeTarification = arguments.getString(4);
@@ -33,15 +32,17 @@ public class ProduitAggregateur implements ArgumentsAggregator {
 			produit.setTarification(tarificationSimple);
 			break;
 		case "PAR_UNITE":
-			final Tarification tarificationParUnite = new TarificationUnitaire();
+			final Tarification tarificationParUnite = new TarificationUnitaire(arguments.getInteger(3));
 			produit.setTarification(tarificationParUnite);
 			break;
 		case "REMISE_SUR_QUANTITE":
-			final Tarification tarificationParQuantite = new TarificationRemiseSurQuantite();
+			final Tarification tarificationParQuantite = new TarificationRemiseSurQuantite(arguments.getInteger(5),
+					arguments.getInteger(6));
 			produit.setTarification(tarificationParQuantite);
 			break;
 		case "REMISE_SUR_PRIX":
-			final Tarification tarificationParPrix = new TarificationRemiseSurPrix();
+			final Tarification tarificationParPrix = new TarificationRemiseSurPrix(arguments.getInteger(5),
+					arguments.get(6, BigDecimal.class));
 			produit.setTarification(tarificationParPrix);
 			break;
 		default:

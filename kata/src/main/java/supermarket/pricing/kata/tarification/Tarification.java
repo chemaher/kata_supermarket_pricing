@@ -12,15 +12,16 @@ import java.math.BigDecimal;
 public interface Tarification {
 
 	/**
-	 * Calculer la tarification du produit sélectionné
+	 * Calculer la tarification simple du produit sélectionné
 	 *
 	 * @param quantite
 	 *            {@link Integer} la quantité du produit sélectionné
 	 * @param prix
 	 *            {@link BigDecimal} le prix du produit sélectionné
-	 * @return {@link BigDecimal} la tarification produit sélectionné
+	 * @return {@link BigDecimal} la tarification du produit sélectionné
+	 *
 	 */
-	public default BigDecimal calculate(final Integer quantite, final BigDecimal prix) {
+	public default BigDecimal calculerTarification(final Integer quantite, final BigDecimal prix) {
 		return prix.multiply(new BigDecimal(quantite));
 	}
 

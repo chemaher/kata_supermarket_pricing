@@ -2,6 +2,7 @@ package supermarket.pricing.kata;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import org.apache.commons.collections.MapUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -20,6 +22,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import supermarket.pricing.kata.domaine.Produit;
 import supermarket.pricing.kata.entrepot.ProduitEntrepot;
+import supermarket.pricing.kata.exception.ProduitNonExistantException;
 import supermarket.pricing.kata.services.ServiceTarification;
 import supermarket.pricing.kata.tarification.TarificationRemiseSurPrix;
 import supermarket.pricing.kata.tarification.TarificationRemiseSurQuantite;
@@ -28,6 +31,10 @@ import supermarket.pricing.kata.tarification.TarificationUnitaire;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class TarificationPanierTest {
+
+	private static final BigDecimal PRIX_CHOCOLAT_REMISE = new BigDecimal(5);
+
+	private static final BigDecimal PRIX_BISSON_REMISE = new BigDecimal(2);
 
 	private static final BigDecimal PRIX_500G_PISTACHE = new BigDecimal(30);
 
@@ -48,8 +55,11 @@ public class TarificationPanierTest {
 	}
 
 	@DisplayName("Tester la tarification simple")
+
 	@ParameterizedTest
+
 	@ValueSource(longs = { 3 })
+
 	@Order(2)
 	public void tarificationSimpleTest(final Long produitID) {
 		final Map<Long, Integer> panier = new HashMap<>();
@@ -63,8 +73,11 @@ public class TarificationPanierTest {
 	}
 
 	@DisplayName("Tester la tarification Unitaire")
+
 	@ParameterizedTest
+
 	@ValueSource(longs = { 1 })
+
 	@Order(3)
 	public void tarificationUnitaireTest(final Long produitID) {
 		final Map<Long, Integer> panier = new HashMap<>();
@@ -78,8 +91,11 @@ public class TarificationPanierTest {
 	}
 
 	@DisplayName("Tester la tarification de remise sur quantité")
+
 	@ParameterizedTest
+
 	@ValueSource(longs = { 2 })
+
 	@Order(4)
 	public void tarificationParQuantiteTest(final Long produitID) {
 		final Map<Long, Integer> panier = new HashMap<>();
@@ -89,7 +105,7 @@ public class TarificationPanierTest {
 				.map(e -> e.getValue().getId()).findFirst().orElse(null);
 		assertEquals(produitID, produit);
 		panier.put(produitID, 3);
-		assertEquals(new BigDecimal(2), serviceTarification.scannerPanier(panier));
+		assertEquals(PRIX_BISSON_REMISE, serviceTarification.scannerPanier(panier));
 	}
 
 	@DisplayName("Tester la tarification de remise sur prix")
@@ -104,7 +120,14 @@ public class TarificationPanierTest {
 				.map(e -> e.getValue().getId()).findFirst().orElse(null);
 		assertEquals(produitID, produit);
 		panier.put(produitID, 4);
-		assertEquals(new BigDecimal(5), serviceTarification.scannerPanier(panier));
+		assertEquals(PRIX_CHOCOLAT_REMISE, serviceTarification.scannerPanier(panier));
+	}
+
+	@Test
+	void produitNonExistantExceptionTest() {
+		final Map<Long, Integer> panier = new HashMap<>();
+		panier.put(55L, 4);
+		assertThrows(ProduitNonExistantException.class, () -> serviceTarification.scannerPanier(panier));
 	}
 
 }

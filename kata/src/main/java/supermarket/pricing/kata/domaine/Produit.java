@@ -31,11 +31,6 @@ public class Produit {
 	private BigDecimal prix;
 
 	/**
-	 * unité de produit qui correspond au prix
-	 */
-	private Long unite;
-
-	/**
 	 * Devise du prix du produit
 	 */
 	private String devise;
@@ -74,14 +69,6 @@ public class Produit {
 		this.prix = prix;
 	}
 
-	public Long getUnite() {
-		return unite;
-	}
-
-	public void setUnite(final @NonNull Long unite) {
-		this.unite = unite;
-	}
-
 	public String getDevise() {
 		return devise;
 	}
@@ -111,7 +98,7 @@ public class Produit {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, nom, prix, devise, dateExpiration, unite);
+		return Objects.hash(id, nom, prix, devise, dateExpiration);
 	}
 
 	/**
@@ -128,8 +115,7 @@ public class Produit {
 		final Produit produit = (Produit) obj;
 		return Objects.equals(id, produit.getId()) && Objects.equals(nom, produit.getNom())
 				&& Objects.equals(prix, produit.getPrix()) && Objects.equals(devise, produit.getDevise())
-				&& Objects.equals(dateExpiration, produit.getDateExpiration())
-				&& Objects.equals(unite, produit.getUnite());
+				&& Objects.equals(dateExpiration, produit.getDateExpiration());
 	}
 
 }
